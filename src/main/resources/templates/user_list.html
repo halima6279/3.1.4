@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>User List</title>
+
+</head>
+<body>
+
+<form metod="get" action="/logout" >
+    <button  tupe="submit"> Logout</button>
+</form>
+
+<table border="1">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Age</th>
+        <th>Email</th>
+        <th>Password</th>
+        <th>Operations</th>
+    </tr>
+    <tr th:each="user: ${users}">
+        <td th:utext="${user.id}">Id</td>
+        <td th:utext="${user.name}">Name</td>
+        <td th:utext="${user.surname}">Surname</td>
+        <td th:utext="${user.age}">Age</td>
+
+        <td th:utext="${user.email}">Email</td>
+        <td th:utext="${user.password}">Password</td>
+
+        <td>
+            <a th:href="@{my-update/{id}(id=${user.id})}">Edit</a>
+            <a th:href="@{user-delete/{id}(id=${user.id})}">Delete</a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
