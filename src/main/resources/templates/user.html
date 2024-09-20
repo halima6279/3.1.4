@@ -63,12 +63,12 @@
                     <span th:each="role : ${user.roles}" th:text="${#strings.substring(role.authority, 5)} + (roleStat ? ' ' : '')"></span>
                 </a>
             </li>
-            <li class="nav-item">
-                <form th:action="@{/logout}" method="post" style="margin: 0;">
-                    <button type="submit" class="btn btn-link nav-link" style="color: white;">Logout</button>
-                </form>
-            </li>
         </ul>
+        <div class="ms-auto"> <!-- Добавляем этот div с классом ms-auto -->
+            <form th:action="@{/logout}" method="post" style="margin: 0;">
+                <button type="submit" class="btn btn-link nav-link" style="color: white;">Logout</button>
+            </form>
+        </div>
     </div>
 </nav>
 
