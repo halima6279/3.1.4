@@ -53,4 +53,5 @@ public class UserServiceImpl implements UserDetailsService, UserService{
     public User findById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
+
 }

@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,24 +18,23 @@ public class AdminController {
 
     private final UserServiceImpl userService;
     private final RoleService roleService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public AdminController(UserServiceImpl userService, RoleService roleService) {
+    public AdminController(UserServiceImpl userService, RoleService roleService, BCryptPasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/admin/users")
-    public String findAll(Model model) {
+    public String findAll(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("user", user);
         List<User> userList = userService.findAll();
-        model.addAttribute("users", userList);
-        return "all_users";
+        model.addAttribute("userList", userList);
+        return "admin";
     }
 
-    @GetMapping("/admin/user-create")
-    public String createUserForm() {
-        return "create_user";
-    }
 
     @PostMapping("/user-create")
     public String createUser(User user,
@@ -43,11 +44,7 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
-    @GetMapping("/admin/user-delete/{id}")
-    public String deleteUser(@PathVariable("id") Long id) {
-        userService.deleteById(id);
-        return "redirect:/admin/users";
-    }
+
 
     @GetMapping("/admin/user-update/{id}")
     public String updateUserForm(@PathVariable("id") Long id, Model model) {
@@ -65,4 +62,13 @@ public class AdminController {
         userService.saveUser(user);
         return "redirect:/admin/users";
     }
+
+    @PostMapping("/user-delete")
+    public String deleteUser(@RequestParam("id") Long id) {
+        userService.deleteById(id);
+        return "redirect:/admin/users";
+    }
+
+
+
 }
