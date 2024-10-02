@@ -24,26 +24,25 @@ public class UserInit {
 
     @PostConstruct
     public void init() {
+        Role userRole = roleRepository.getRoleByName("ROLE_USER");
+        Role adminRole = roleRepository.getRoleByName("ROLE_ADMIN");
+
         if (userRepository.findByUsername("admin") == null) {
-            Role userRole = roleRepository.getRoleByName("ROLE_USER");
-            Role adminRole = roleRepository.getRoleByName("ROLE_ADMIN");
-
-
             Set<Role> adminRoles = new HashSet<>();
             adminRoles.add(adminRole);
             adminRoles.add(userRole);
-
 
             User admin = new User();
             admin.setUsername("admin");
             admin.setSurname("admin");
             admin.setAge(26);
             admin.setEmail("admin@gmail.com");
-            admin.setPassword(passwordEncoder.encode("admin"));  // кодируем пароль
-            admin.setRole(adminRoles);  // устанавливаем роли
+            admin.setPassword(passwordEncoder.encode("admin"));
+            admin.setRoles(adminRoles);
             userRepository.save(admin);
+        }
 
-
+        if (userRepository.findByUsername("user") == null) {
             Set<Role> userRoles = new HashSet<>();
             userRoles.add(userRole);
 
@@ -54,7 +53,7 @@ public class UserInit {
             user.setAge(26);
             user.setEmail("user@gmail.com");
             user.setPassword(passwordEncoder.encode("user"));
-            user.setRole(userRoles);
+            user.setRoles(userRoles);
             userRepository.save(user);
         }
     }

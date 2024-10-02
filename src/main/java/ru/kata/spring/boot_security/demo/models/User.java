@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,14 +17,19 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column
     private String username;
+
     @Column
     private String surname;
+
     @Column
     private int age;
+
     @Column
     private String email;
+
     @Column
     private String password;
 
@@ -31,22 +37,16 @@ public class User implements UserDetails {
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-
     private Set<Role> roles;
 
-
-    public User() {
-
-    }
+    public User() {}
 
     public User(String email, String password, Collection<? extends GrantedAuthority> authorities) {
     }
 
-
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -54,7 +54,6 @@ public class User implements UserDetails {
     public String getName() {
         return username;
     }
-
     public void setName(String username) {
         this.username = username;
     }
@@ -62,7 +61,6 @@ public class User implements UserDetails {
     public String getSurname() {
         return surname;
     }
-
     public void setSurname(String surname) {
         this.surname = surname;
     }
@@ -70,7 +68,6 @@ public class User implements UserDetails {
     public int getAge() {
         return age;
     }
-
     public void setAge(int age) {
         this.age = age;
     }
@@ -78,7 +75,6 @@ public class User implements UserDetails {
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
@@ -87,20 +83,16 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-
-    public Set<Role> getRole() {
+    public Set <Role> getRole() {
         return roles;
     }
-
-    public void setRole(Set<Role> role) {
-        this.roles = role;
+    public void setRole(Set<Role> roles) {
+        this.roles = roles;
     }
-
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRole();
+        return getRoles();
     }
 
     @Override

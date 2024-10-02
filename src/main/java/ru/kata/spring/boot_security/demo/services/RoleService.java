@@ -9,8 +9,8 @@ import java.util.Set;
 
 public interface RoleService {
     List<Role> findAll();
-    Set<Role> getSetRoles(String[] roleNames);
+    Set<Role> getRolesSet(String[] roleNames);
     @Query("SELECT r FROM Role r WHERE r.name = :name")
     Role getRoleByName(@Param("name") String name);
-    // void addRole(Role role);
+
 }
